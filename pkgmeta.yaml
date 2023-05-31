@@ -1,3 +1,10 @@
+package-as: MeetingStone
+
+ignore:
+  - .gitignore
+  - LICENSE
+  - README.md
+
 move-folders:
-  MeetingStone_Happy/MeetingStone: MeetingStone
-  MeetingStone_Happy/MeetingStoneEX: MeetingStoneEX
+  MeetingStone/MeetingStone: MeetingStone
+  MeetingStone/MeetingStoneEX: MeetingStoneEX
