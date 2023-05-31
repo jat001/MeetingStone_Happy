@@ -2,8 +2,6 @@ package-as: MeetingStone
 
 ignore:
   - .gitignore
-  - LICENSE
-  - README.md
 
 move-folders:
   MeetingStone/MeetingStone: MeetingStone
