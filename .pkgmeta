@@ -1,8 +1,5 @@
 package-as: MeetingStone
 
-ignore:
-  - .gitignore
-
 move-folders:
   MeetingStone/MeetingStone: MeetingStone
   MeetingStone/MeetingStoneEX: MeetingStoneEX
