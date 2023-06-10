@@ -1,4 +1,6 @@
-# MeetingStone_Happy
+**Currently, only Chinese is available. No plans to translate it into other languages.**
+
+# MeetingStone_Happy 集合石开心快乐版
 
 https://www.curseforge.com/wow/addons/meetingstone_happy
 
