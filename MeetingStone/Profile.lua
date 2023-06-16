@@ -31,6 +31,8 @@ function Profile:OnInitialize()
             classIcoMsOnly    = true,
             showWindClassIco  = false,
             useWindSkin       = true,
+            enableRaiderIO    = true,
+            enableLeaderColor = true,
             filters           = {},
         },
     }
@@ -171,6 +173,14 @@ end
 
 function Profile:GetUseWindSkin()
     return self:GetGlobalOption('useWindSkin')
+end
+
+function Profile:GetEnableRaiderIO()
+    return self:GetGlobalOption('enableRaiderIO')
+end
+
+function Profile:GetEnableLeaderColor()
+    return self:GetGlobalOption('enableLeaderColor')
 end
 
 function Profile:SaveGlobalOption(key, value)
