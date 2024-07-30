@@ -28,6 +28,8 @@ function Profile:OnInitialize()
             searchProfiles    = {},
             enableIgnoreTitle = true,
             showclassico      = true,
+            showspecico       = false,
+            showSmRoleIco     = false,
             classIcoMsOnly    = true,
             showWindClassIco  = false,
             useWindSkin       = true,
@@ -74,6 +76,7 @@ function Profile:OnInitialize()
     self.cdb = LibStub('AceDB-3.0'):New('MEETINGSTONE_CHARACTER_DB', cdb)
 
     local settingVersion = self:GetLastCharacterVersion()
+
     if settingVersion < 70300.12 then
         self.cdb.profile.settings.onlyms = nil
 
@@ -92,7 +95,7 @@ function Profile:OnInitialize()
         self.cdb.profile.lastSearchValue = nil
     end
     if settingVersion < 80000.03 then
-        wipe(self.cdb.profile.searchHistoryList)
+        -- wipe(self.cdb.profile.searchHistoryList)
     end
     self.cdb.profile.version = ADDON_VERSION
 
@@ -164,6 +167,14 @@ function Profile:GetShowClassIco()
     return self:GetGlobalOption('showclassico')
 end
 
+function Profile:GetShowSpecIco()
+    return self:GetGlobalOption('showspecico')
+end
+
+function Profile:GetShowSmRoleIco()
+    return self:GetGlobalOption('showSmRoleIco')
+end
+
 function Profile:GetClassIcoMsOnly()
     return self:GetGlobalOption('classIcoMsOnly')
 end
@@ -181,7 +192,8 @@ function Profile:GetUseWindSkin()
 end
 
 function Profile:GetEnableRaiderIO()
-    return self:GetGlobalOption('enableRaiderIO')
+    local region = GetPlayerRegion()
+    return self:GetGlobalOption('enableRaiderIO') and region ~= "CN"
 end
 
 function Profile:GetEnableLeaderColor()

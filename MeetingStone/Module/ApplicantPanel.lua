@@ -51,7 +51,7 @@ local APPLICANT_LIST_HEADER = {
         iconHandler = function(applicant)
             -- return [[INTERFACE\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES]], CLASS_ICON_TCOORDS[applicant:GetClass()]
             return "Interface/AddOns/MeetingStone/Media/ClassIcon/" .. string.lower(applicant:GetClass()) ..
-                "_flatborder2"
+                "_flat"
         end,
         sortHandler = function(applicant)
             return _PartySortHandler(applicant) or applicant:GetClass()
@@ -86,8 +86,8 @@ local APPLICANT_LIST_HEADER = {
                     local scoreText
                     local info = applicant:GetBestDungeonScore()
                     if info and info.mapScore and info.mapScore > 0 then
-                        local color = C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(info.mapScore) or
-                            HIGHLIGHT_FONT_COLOR
+                        local color =  C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(info.mapScore) or HIGHLIGHT_FONT_COLOR
+                            
                         local levelText = format(info.finishedSuccess and "|cff00ff00%d层|r" or "|cff7f7f7f%d层|r",
                             info.bestRunLevel or 0)
                         scoreText = format("%s / %s / %s ", colorAll:WrapTextInColorCode(score),
@@ -363,6 +363,14 @@ function ApplicantPanel:ToggleEventMenu(button, applicant)
                 C_LFGList.DeclineApplicant(applicant:GetID())
             end,
             disabled = not name,
+        },
+        {
+            text = '复制申请者名字',
+            func = function()                
+                local name = applicant:GetName()
+                print(name)
+                GUI:CallUrlDialog(name)
+            end,
         },
         {
             text = CANCEL,

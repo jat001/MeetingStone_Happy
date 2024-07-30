@@ -42,7 +42,7 @@ GUI = LibStub('NetEaseGUI-2.0')
 ACTIVITY_NAMES = {}
 do
     -- local Dungeons = { 302, 306, 307, 308, 12, 120, 114, 61 }
-    local Dungeons = { 11, 54, 113, 118, 137, 145, 316, 317 }
+    local Dungeons = { 302,303,304,305,306,307,308,309 }
     -- local Activitys = {1160,1176,1180,1184,1193,466,461,1195}
     for k, groupId in ipairs(Dungeons) do
         local DeText = C_LFGList.GetActivityGroupInfo(groupId)
@@ -689,6 +689,14 @@ function BrowsePanel:ToggleActivityMenu(anchor, activity)
                 end
                 BrowsePanel.IgnoreWithTitle[title] = true
                 BrowsePanel.ActivityList:Refresh()
+            end,
+        },
+        {
+            text = '复制队长名字',
+            func = function()                
+                local name = activity:GetLeader()
+                print(name)
+                GUI:CallUrlDialog(name)
             end,
         },
         { text = CANCEL },
