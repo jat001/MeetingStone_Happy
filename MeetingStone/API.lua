@@ -4,25 +4,25 @@ local memorize = require('NetEaseMemorize-1.0')
 local nepy = require('NetEasePinyin-1.0')
 local Base64 = LibStub('NetEaseBase64-1.0')
 local AceSerializer = LibStub('AceSerializer-3.0')
-  
+
 local RoleIconTextures = {
-	[1] = "Interface/AddOns/MeetingStone/Media/SunUI/TANK.tga",
-	[2] = "Interface/AddOns/MeetingStone/Media/SunUI/Healer.tga",
-	[3] = "Interface/AddOns/MeetingStone/Media/SunUI/DPS.tga",
+    [1] = "Interface/AddOns/MeetingStone/Media/SunUI/TANK.tga",
+    [2] = "Interface/AddOns/MeetingStone/Media/SunUI/Healer.tga",
+    [3] = "Interface/AddOns/MeetingStone/Media/SunUI/DPS.tga",
 }
 local classNameToSpecIcon = {}
 local classNameToSpecId = {}
 for classID = 1, 13 do
-	local classFile = select(2, GetClassInfo(classID)) -- "WARRIOR"
-	if classFile then
-		for specIndex = 1, 4 do
-			local specId, localizedSpecName, _, icon = GetSpecializationInfoForClassID(classID, specIndex)
-			if specId and localizedSpecName and icon then                
-				classNameToSpecIcon[classFile..localizedSpecName] = icon
-                classNameToSpecId[classFile..localizedSpecName] = specId
-			end
-		end
-	end
+    local classFile = select(2, GetClassInfo(classID)) -- "WARRIOR"
+    if classFile then
+        for specIndex = 1, 4 do
+            local specId, localizedSpecName, _, icon = GetSpecializationInfoForClassID(classID, specIndex)
+            if specId and localizedSpecName and icon then
+                classNameToSpecIcon[classFile .. localizedSpecName] = icon
+                classNameToSpecId[classFile .. localizedSpecName] = specId
+            end
+        end
+    end
 end
 
 function GetClassColorText(className, text)
@@ -425,7 +425,7 @@ function GetAddonSource()
         '\066\105\103\070\111\111\116\058\049\010\033\033\033\049\054\051\085\073\033\033\033\058\050\010\068\117\111\119\097\110\058\052\010\069\108\118\085\073\058\056',
         '[^\r\n]+') do
         local n, v = line:match('^(.+):(%d+)$')
-        if IsAddOnLoaded(n) then
+        if C_AddOns.IsAddOnLoaded(n) then
             return tonumber(v)
         end
     end
@@ -607,7 +607,7 @@ local function UpdateGroupRoles(self)
             roleCache[count][1] = roleIndex
             roleCache[count][2] = class
             roleCache[count][3] = i == 1
-			roleCache[count][4] = spec
+            roleCache[count][4] = spec
         end
     end
 
@@ -631,10 +631,10 @@ local function CheckShowIcons(frame)
     if not isLFGList then
         if not Profile:GetShowClassIco() then
             return "orig"
-        elseif IsAddOnLoaded("ElvUI_WindTools") and Profile:GetShowWindClassIco() then
+        elseif C_AddOns.IsAddOnLoaded("ElvUI_WindTools") and Profile:GetShowWindClassIco() then
             -- Module LFGList does not initialize when PremadeGroupsFilter is loaded
             -- print(WindTools[3].private.WT.misc.lfgList.enable)
-            if not IsAddOnLoaded("PremadeGroupsFilter") and WindTools[3].private.WT.misc.lfgList.enable then
+            if not C_AddOns.IsAddOnLoaded("PremadeGroupsFilter") and WindTools[3].private.WT.misc.lfgList.enable then
                 return "wind"
             else
                 return "orig"
@@ -643,9 +643,9 @@ local function CheckShowIcons(frame)
             return "meet"
         end
     else
-        if IsAddOnLoaded("PremadeGroupsFilter") then
+        if C_AddOns.IsAddOnLoaded("PremadeGroupsFilter") then
             return "orig"
-        elseif IsAddOnLoaded("ElvUI_WindTools") and WindTools[3].private.WT.misc.lfgList.enable then
+        elseif C_AddOns.IsAddOnLoaded("ElvUI_WindTools") and WindTools[3].private.WT.misc.lfgList.enable then
             return "wind"
         elseif Profile:GetShowClassIco() and not Profile:GetClassIcoMsOnly() then
             return "meet"
@@ -656,16 +656,15 @@ local function CheckShowIcons(frame)
 end
 
 local function ReplaceGroupRoles(self, numPlayers, _, disabled)
-
     local flagCheckShowIcons = CheckShowIcons(self)
     if flagCheckShowIcons == "orig" then
         return
-    elseif flagCheckShowIcons == "wind" then        
+    elseif flagCheckShowIcons == "wind" then
         return WindTools[1]:GetModule("LFGList"):UpdateEnumerate(self)
     end
 
     local flagCheckShowSpecIcon = Profile:GetShowSpecIco()
-    local flagCheckShowSmRoleIcon = Profile:GetShowSmRoleIco()    
+    local flagCheckShowSmRoleIcon = Profile:GetShowSmRoleIco()
 
     UpdateGroupRoles(self)
     for i = 1, 5 do
@@ -683,7 +682,6 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
             icon.leader = self:CreateTexture(nil, "OVERLAY")
             icon.leader:SetTexture("Interface\\GroupFrame\\UI-Group-LeaderIcon")
             icon.leader:SetRotation(rad(-15))
-            
         end
 
         if i > numPlayers then
@@ -695,12 +693,12 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
             icon.leader:SetDesaturated(disabled)
             icon.leader:SetAlpha(disabled and .5 or 1)
         end
-		
-		--icon.RoleIconWithBackground:Hide()
-		--icon.RoleIcon:Hide()
-		--icon.ClassCircle:Hide()
-		--icon.Textures
-		--icon.role:Hide()
+
+        --icon.RoleIconWithBackground:Hide()
+        --icon.RoleIcon:Hide()
+        --icon.ClassCircle:Hide()
+        --icon.Textures
+        --icon.role:Hide()
         icon.leader:Hide()
     end
 
@@ -712,32 +710,33 @@ local function ReplaceGroupRoles(self, numPlayers, _, disabled)
             if flagCheckShowSmRoleIcon then
                 icon:SetSize(15, 15)
                 icon:SetPoint("TOPLEFT", icon.role, -4, 6)
-                icon.leader:SetSize(13, 13)     
+                icon.leader:SetSize(13, 13)
                 icon.leader:SetPoint("TOP", icon.role, 4, 8)
             else
                 icon:SetSize(18, 18)
                 icon:SetPoint("TOPLEFT", icon.role, -4, 5)
-                icon.leader:SetSize(16, 16)     
+                icon.leader:SetSize(16, 16)
                 icon.leader:SetPoint("TOP", icon.role, 4, 8)
             end
-            
-			if roleInfo[4] and flagCheckShowSpecIcon then
+
+            if roleInfo[4] and flagCheckShowSpecIcon then
                 -- print(classNameToSpecId[roleInfo[2]..roleInfo[4]])
-                local spec_id = classNameToSpecId[roleInfo[2]..roleInfo[4]]
+                local spec_id = classNameToSpecId[roleInfo[2] .. roleInfo[4]]
                 if spec_id == nil then
-                    icon.role:SetTexture(classNameToSpecIcon[roleInfo[2]..roleInfo[4]])
-                else                     
-                    icon.role:SetTexture("Interface/AddOns/MeetingStone/Media/SpellIcon/circular_"..spec_id)
+                    icon.role:SetTexture(classNameToSpecIcon[roleInfo[2] .. roleInfo[4]])
+                else
+                    icon.role:SetTexture("Interface/AddOns/MeetingStone/Media/SpellIcon/circular_" .. spec_id)
                 end
                 -- print(classNameToSpecIcon[roleInfo[2]..roleInfo[4]])
-			else
-				icon.role:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/" .. string.lower(roleInfo[2]) .. "_flatborder2")
-			end
+            else
+                icon.role:SetTexture("Interface/AddOns/MeetingStone/Media/ClassIcon/" ..
+                    string.lower(roleInfo[2]) .. "_flatborder2")
+            end
 
-			if roleInfo[1] and RoleIconTextures[roleInfo[1]] then
-				-- icon.RoleIconWithBackground:SetTexture(RoleIconTextures[roleInfo[1]])
+            if roleInfo[1] and RoleIconTextures[roleInfo[1]] then
+                -- icon.RoleIconWithBackground:SetTexture(RoleIconTextures[roleInfo[1]])
                 icon.RoleIconWithBackground:SetAtlas(roleAtlas[roleInfo[1]])
-			end
+            end
 
             -- icon.role:SetAtlas(roleAtlas[roleInfo[1]])
             icon.leader:SetShown(roleInfo[3])
@@ -754,7 +753,7 @@ function InitMeetingStoneClass()
     local F = "LFGListGroupDataDisplayEnumerate_Update"
     Profile:OnInitialize()
 
-    if not IsAddOnLoaded("ElvUI_WindTools") then
+    if not C_AddOns.IsAddOnLoaded("ElvUI_WindTools") then
         hooksecurefunc(F, ReplaceGroupRoles)
     else
         local W, _, E = unpack(WindTools)
@@ -790,4 +789,15 @@ function GetPortalByLocale()
     end
 
     return portalVal
+end
+
+-- originally sourced from Blizzard_Deprecated/Deprecated_10_1_5.lua
+function GetTexCoordsForRoleSmallCircle(role)
+    if (role == 'TANK') then
+        return 0, 19 / 64, 22 / 64, 41 / 64
+    elseif (role == 'HEALER') then
+        return 20 / 64, 39 / 64, 1 / 64, 20 / 64
+    elseif (role == 'DAMAGER') then
+        return 20 / 64, 39 / 64, 22 / 64, 41 / 64
+    end
 end
