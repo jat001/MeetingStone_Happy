@@ -1,4 +1,4 @@
-## Interface: 110005
+## Interface: 110007
 ## X-Min-Interface: 110000
 
 ## Version: @project-version@
